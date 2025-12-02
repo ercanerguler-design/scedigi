@@ -3,13 +3,13 @@
 ## Admin Panel Giriş
 
 ### Admin Kullanıcı Bilgileri
-- **Email**: `admin@sceinnovation.com`
+- **Email**: `admin@scegrup.com`
 - **Şifre**: `Admin123!`
 - **Rol**: Admin
 
 ### Giriş Adımları
 1. Tarayıcınızda `/auth/signin` sayfasına gidin
-2. Email: `admin@sceinnovation.com` girin
+2. Email: `admin@scegrup.com` girin
 3. Şifre: `Admin123!` girin
 4. "Giriş Yap" butonuna tıklayın
 5. Dashboard'a yönlendirileceksiniz
@@ -55,7 +55,7 @@ Admin panelden yeni kullanıcılar oluşturabilirsiniz:
 
 **Admin paneline erişemiyorum**
 - Kullanıcınızın `role: 'admin'` olduğundan emin olun
-- Database'de kontrol edin: `SELECT * FROM User WHERE email = 'admin@sceinnovation.com'`
+- Database'de kontrol edin: `SELECT * FROM User WHERE email = 'admin@scegrup.com'`
 
 **Şifremi unuttum**
 - `npm run create-admin` komutunu çalıştırın
