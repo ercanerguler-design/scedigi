@@ -1,4 +1,5 @@
 import { TwitterApi } from 'twitter-api-v2'
+import axios from 'axios'
 
 export class TwitterAPI {
   private client: TwitterApi
