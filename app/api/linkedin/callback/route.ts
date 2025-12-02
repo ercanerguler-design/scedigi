@@ -16,6 +16,7 @@ export async function GET(request: Request) {
 
   try {
     // Exchange code for access token
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3001'
     const tokenResponse = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
       method: 'POST',
       headers: {
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
         code: code,
         client_id: process.env.LINKEDIN_CLIENT_ID || '',
         client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
-        redirect_uri: 'http://localhost:3001/api/linkedin/callback',
+        redirect_uri: `${baseUrl}/api/linkedin/callback`,
       }),
     })
 

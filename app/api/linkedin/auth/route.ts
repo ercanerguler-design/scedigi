@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server'
 // LinkedIn OAuth başlatma endpoint'i
 export async function GET() {
   const clientId = process.env.LINKEDIN_CLIENT_ID
-  const redirectUri = 'http://localhost:3001/api/linkedin/callback'
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3001'
+  const redirectUri = `${baseUrl}/api/linkedin/callback`
   
   if (!clientId) {
     return NextResponse.json({ error: 'LinkedIn Client ID bulunamadı' }, { status: 400 })
