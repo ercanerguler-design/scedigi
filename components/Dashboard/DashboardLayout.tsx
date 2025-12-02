@@ -13,7 +13,8 @@ import {
   X,
   FileText,
   Building2,
-  UserCircle2
+  UserCircle2,
+  TrendingUp
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -28,6 +29,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     { name: 'Teklifler', href: '/dashboard/proposals', icon: FileText },
     { name: 'Kampanyalar', href: '/dashboard/campaigns', icon: Target },
     { name: 'Sosyal Medya', href: '/dashboard/social-media', icon: Share2 },
+    { name: 'Raporlar', href: '/dashboard/reports', icon: TrendingUp },
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'Servis Ağı', href: '/service-network', icon: Building2 },
     { name: 'Ayarlar', href: '/dashboard/settings', icon: Settings },

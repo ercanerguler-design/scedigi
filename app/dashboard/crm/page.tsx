@@ -109,7 +109,7 @@ export default function CRMPage() {
               ) : (
                 <div className="space-y-4">
                   {contacts.map((contact) => (
-                    <div key={contact.id} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50">
+                    <div key={contact.id} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-all">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <h3 className="font-semibold text-lg text-slate-900">{contact.name}</h3>
@@ -144,6 +144,21 @@ export default function CRMPage() {
                             </div>
                           )}
                         </div>
+                        <button
+                          onClick={async () => {
+                            if (confirm('Bu iletişimi silmek istediğinizden emin misiniz?')) {
+                              try {
+                                await fetch(`/api/crm/contacts/${contact.id}`, { method: 'DELETE' })
+                                fetchContacts()
+                              } catch (error) {
+                                console.error('Error deleting contact:', error)
+                              }
+                            }
+                          }}
+                          className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
                       </div>
                     </div>
                   ))}
