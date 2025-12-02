@@ -41,13 +41,34 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+      
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <img src="/logo.svg" alt="SCE Digital CRM" className="h-16 w-16" />
+            <div className="text-left">
+              <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                SCE Digital
+              </div>
+              <div className="text-sm font-semibold text-slate-600 uppercase tracking-wider">CRM Platform</div>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Hoş Geldiniz</h1>
+          <p className="text-slate-600">Devam etmek için giriş yapın</p>
+        </div>
+        
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border border-slate-200">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">
-              SCE INNOVATION
-            </h1>
+            <h2 className="text-xl font-bold text-slate-900">
+              Giriş Yap
+            </h2>
             <p className="text-slate-600">Hesabınıza giriş yapın</p>
           </div>
 

@@ -6,6 +6,8 @@ import { RevenueChart } from '@/components/Dashboard/RevenueChart'
 import { LeadsPipeline } from '@/components/Dashboard/LeadsPipeline'
 import { TrendingUp, Users, DollarSign, Target, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 interface DashboardStats {
   totalLeads: number
@@ -20,18 +22,26 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchStats()
-  }, [])
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+    } else if (status === 'authenticated') {
+      fetchStats()
+    }
+  }, [status, router])
 
   const fetchStats = async () => {
     try {
       const response = await fetch('/api/dashboard/stats')
-      const data = await response.json()
-      setStats(data)
+      if (response.ok) {
+        const data = await response.json()
+        setStats(data)
+      }
     } catch (error) {
       console.error('Error fetching stats:', error)
     } finally {
@@ -39,7 +49,7 @@ export default function DashboardPage() {
     }
   }
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
@@ -49,17 +59,21 @@ export default function DashboardPage() {
     )
   }
 
+  if (status === 'unauthenticated') {
+    return null
+  }
+
   const metrics = [
     { 
       title: 'Toplam Lead', 
-      value: stats?.totalLeads.toString() || '0', 
+      value: stats?.totalLeads?.toString() || '0', 
       change: `${stats?.qualifiedLeads || 0} Kalifiye`, 
       icon: Users, 
       color: 'bg-purple-500' 
     },
     { 
       title: 'Aktif Kampanya', 
-      value: stats?.activeCampaigns.toString() || '0', 
+      value: stats?.activeCampaigns?.toString() || '0', 
       change: 'Devam Eden', 
       icon: Target, 
       color: 'bg-blue-500' 
@@ -73,7 +87,7 @@ export default function DashboardPage() {
     },
     { 
       title: 'Conversion Rate', 
-      value: `%${stats?.conversionRate.toFixed(1) || '0.0'}`, 
+      value: `%${stats?.conversionRate?.toFixed(1) || '0.0'}`, 
       change: `${stats?.completedTasks || 0}/${stats?.totalTasks || 0} Görev`, 
       icon: TrendingUp, 
       color: 'bg-orange-500' 

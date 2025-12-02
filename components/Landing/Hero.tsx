@@ -36,10 +36,10 @@ export function Hero() {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link 
-            href="/dashboard"
+            href="/auth/signin"
             className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg hover:shadow-2xl transform hover:scale-105 transition-all text-lg font-medium"
           >
-            Ücretsiz Başla
+            Giriş Yap
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link

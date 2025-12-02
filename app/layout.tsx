@@ -7,8 +7,11 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SCE Digital Platform',
-  description: 'Tam entegre dijital pazarlama ve CRM platformu',
+  title: 'SCE Digital CRM - Software Circuit Engineer',
+  description: 'Yenilikçi yeni ürünler ve çözümler geliştirerek akut müşteri sorunlarını çözüyoruz',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({

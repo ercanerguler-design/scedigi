@@ -20,11 +20,11 @@ export default function LandingPage() {
             <Link href="/service-network" className="text-slate-600 hover:text-primary-600">
               Servis Ağı
             </Link>
-            <Link href="/dashboard" className="text-slate-600 hover:text-primary-600">
-              Dashboard
+            <Link href="/contact" className="text-slate-600 hover:text-primary-600">
+              İletişim
             </Link>
-            <Link href="/dashboard" className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-              Başla
+            <Link href="/auth/signin" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all">
+              Giriş Yap
             </Link>
           </div>
         </div>
