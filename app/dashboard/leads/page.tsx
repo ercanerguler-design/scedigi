@@ -107,14 +107,23 @@ export default function LeadsPage() {
     if (!confirm('Bu lead\'i silmek istediğinizden emin misiniz?')) return
 
     try {
-      await fetch('/api/leads/update', {
+      const response = await fetch('/api/leads/update', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
       })
-      fetchLeads()
+      
+      if (response.ok) {
+        console.log('Lead successfully deleted')
+        fetchLeads()
+      } else {
+        const error = await response.json()
+        console.error('Delete failed:', error)
+        alert('Lead silinemedi: ' + (error.error || 'Bilinmeyen hata'))
+      }
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error deleting lead:', error)
+      alert('Lead silinirken bir hata oluştu')
     }
   }
 
