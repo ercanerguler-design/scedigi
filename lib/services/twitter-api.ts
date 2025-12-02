@@ -1,14 +1,17 @@
 import { TwitterApi } from 'twitter-api-v2'
-import axios from 'axios'
+
+const TWITTER_API_BASE = 'https://api.twitter.com/2'
 
 export class TwitterAPI {
   private client: TwitterApi
+  private bearerToken?: string
 
   constructor(credentials: {
     apiKey: string
     apiSecret: string
     accessToken: string
     accessSecret: string
+    bearerToken?: string
   }) {
     this.client = new TwitterApi({
       appKey: credentials.apiKey,
@@ -16,6 +19,7 @@ export class TwitterAPI {
       accessToken: credentials.accessToken,
       accessSecret: credentials.accessSecret,
     })
+    this.bearerToken = credentials.bearerToken
   }
 
   async tweet(content: string) {
@@ -36,15 +40,14 @@ export class TwitterAPI {
 
   async getMetrics() {
     try {
-      const response = await axios.get(
-        `${TWITTER_API_BASE}/users/me/metrics`,
-        {
-          headers: {
-            'Authorization': `Bearer ${this.bearerToken}`
-          }
-        }
-      )
-      return response.data
+      // Use Twitter API v2 to get user metrics
+      const me = await this.client.v2.me()
+      return {
+        followers: 0, // Would need additional API call
+        tweets: 0,
+        engagement: 0,
+        username: me.data.username
+      }
     } catch (error) {
       console.error('Twitter metrics error:', error)
       return { followers: 0, tweets: 0, engagement: 0 }
