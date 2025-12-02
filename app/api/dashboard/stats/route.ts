@@ -66,7 +66,7 @@ export async function GET() {
       prisma.task.count({
         where: { 
           userId: user.id,
-          completed: true
+          status: 'completed'
         }
       }),
       // Total tasks
