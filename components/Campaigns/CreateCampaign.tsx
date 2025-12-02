@@ -1,13 +1,14 @@
 'use client'
 
-import { X } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
 interface CreateCampaignProps {
   onClose: () => void
+  onSuccess: () => void
 }
 
-export function CreateCampaign({ onClose }: CreateCampaignProps) {
+export function CreateCampaign({ onClose, onSuccess }: CreateCampaignProps) {
   const [formData, setFormData] = useState({
     name: '',
     budget: '',
@@ -15,13 +16,41 @@ export function CreateCampaign({ onClose }: CreateCampaignProps) {
     startDate: '',
     endDate: ''
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const channels = ['Facebook', 'Instagram', 'Google Ads', 'Twitter', 'LinkedIn', 'Email', 'WhatsApp']
+  const channels = ['Facebook', 'Instagram', 'Google Ads', 'Twitter', 'LinkedIn', 'Email', 'WhatsApp', 'SMS']
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Creating campaign:', formData)
-    onClose()
+    setIsLoading(true)
+    setError('')
+
+    if (formData.channels.length === 0) {
+      setError('En az bir kanal seçmelisiniz')
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      const response = await fetch('/api/campaigns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        onSuccess()
+      } else {
+        setError(data.error || 'Kampanya oluşturulamadı')
+      }
+    } catch (error) {
+      setError('Bir hata oluştu')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -29,10 +58,16 @@ export function CreateCampaign({ onClose }: CreateCampaignProps) {
       <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-2xl font-bold">Yeni Kampanya Oluştur</h2>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg">
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg" disabled={isLoading}>
             <X size={20} />
           </button>
         </div>
+
+        {error && (
+          <div className="mx-6 mt-6 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
@@ -119,15 +154,18 @@ export function CreateCampaign({ onClose }: CreateCampaignProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 font-medium"
+              disabled={isLoading}
+              className="flex-1 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 font-medium disabled:opacity-50"
             >
               İptal
             </button>
             <button
               type="submit"
-              className="flex-1 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium"
+              disabled={isLoading}
+              className="flex-1 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              Kampanya Oluştur
+              {isLoading && <Loader2 size={20} className="animate-spin" />}
+              {isLoading ? 'Oluşturuluyor...' : 'Kampanya Oluştur'}
             </button>
           </div>
         </form>

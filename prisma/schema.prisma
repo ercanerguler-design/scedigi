@@ -38,18 +38,22 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   password      String?
   image         String?
-  role          String    @default("user")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  role          String     @default("user")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   accounts      Account[]
   sessions      Session[]
   leads         Lead[]
+  campaigns     Campaign[]
+  tasks         Task[]
+  contacts      Contact[]
+  proposals     Proposal[]
 }
 
 model VerificationToken {
@@ -72,6 +76,121 @@ model Lead {
   score       Int      @default(50)
   userId      String?
   user        User?    @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  name        String
+  status      String   @default("draft") // draft, active, paused, completed
+  channels    String[] // Facebook, Instagram, Google Ads, etc.
+  budget      Float
+  spent       Float    @default(0)
+  leads       Int      @default(0)
+  conversions Int      @default(0)
+  startDate   DateTime
+  endDate     DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  priority    String   @default("medium") // low, medium, high, urgent
+  status      String   @default("todo") // todo, in-progress, completed
+  dueDate     DateTime?
+  contactId   String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contact {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  position    String?
+  tags        String[] // ["vip", "potential", "partner"]
+  notes       String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  address     String
+  city        String
+  district    String?
+  phone       String
+  email       String?
+  workingHours String?
+  services    String[] // ["maintenance", "repair", "installation", "spare-parts"]
+  latitude    Float?
+  longitude   Float?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Dealer {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  address     String
+  city        String
+  district    String?
+  phone       String
+  email       String?
+  website     String?
+  workingHours String?
+  products    String[] // ["product1", "product2"]
+  latitude    Float?
+  longitude   Float?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Proposal {
+  id          String         @id @default(cuid())
+  title       String
+  clientName  String
+  clientEmail String
+  clientPhone String?
+  status      String         @default("draft") // draft, sent, approved, rejected
+  validUntil  DateTime
+  notes       String?
+  subtotal    Float          @default(0)
+  tax         Float          @default(0)
+  total       Float          @default(0)
+  items       ProposalItem[]
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model ProposalItem {
+  id          String   @id @default(cuid())
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  quantity    Int      @default(1)
+  unitPrice   Float
+  total       Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

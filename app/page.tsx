@@ -13,10 +13,13 @@ export default function LandingPage() {
             SCE Digital
           </Link>
           <div className="flex gap-6 items-center">
+            <Link href="/service-network" className="text-slate-600 hover:text-primary-600">
+              Servis Ağı
+            </Link>
             <Link href="/dashboard" className="text-slate-600 hover:text-primary-600">
               Dashboard
             </Link>
-            <Link href="/dashboard" className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700">
+            <Link href="/dashboard" className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors">
               Başla
             </Link>
           </div>
@@ -38,10 +41,12 @@ export default function LandingPage() {
             <div>
               <h4 className="font-semibold mb-4">Ürünler</h4>
               <ul className="space-y-2 text-slate-400">
-                <li><Link href="/dashboard/campaigns">Kampanya Yönetimi</Link></li>
-                <li><Link href="/dashboard/social-media">Sosyal Medya</Link></li>
-                <li><Link href="/dashboard/analytics">Analytics</Link></li>
-                <li><Link href="/dashboard/leads">CRM</Link></li>
+                <li><Link href="/dashboard/campaigns" className="hover:text-white transition-colors">Kampanya Yönetimi</Link></li>
+                <li><Link href="/dashboard/social-media" className="hover:text-white transition-colors">Sosyal Medya</Link></li>
+                <li><Link href="/dashboard/analytics" className="hover:text-white transition-colors">Analytics</Link></li>
+                <li><Link href="/dashboard/crm" className="hover:text-white transition-colors">CRM</Link></li>
+                <li><Link href="/dashboard/proposals" className="hover:text-white transition-colors">Teklif Sistemi</Link></li>
+                <li><Link href="/service-network" className="hover:text-white transition-colors">Servis Ağı</Link></li>
               </ul>
             </div>
             <div>

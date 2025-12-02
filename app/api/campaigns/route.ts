@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-// GET all contacts for user
+// GET all campaigns for user
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
@@ -20,19 +20,19 @@ export async function GET() {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    const contacts = await prisma.contact.findMany({
+    const campaigns = await prisma.campaign.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: 'desc' }
     })
 
-    return NextResponse.json(contacts)
+    return NextResponse.json(campaigns)
   } catch (error) {
-    console.error('Error fetching contacts:', error)
-    return NextResponse.json({ error: 'Failed to fetch contacts' }, { status: 500 })
+    console.error('Error fetching campaigns:', error)
+    return NextResponse.json({ error: 'Failed to fetch campaigns' }, { status: 500 })
   }
 }
 
-// POST create new contact
+// POST create new campaign
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)
@@ -50,28 +50,27 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { name, email, phone, company, position, tags, notes } = body
+    const { name, channels, budget, startDate, endDate } = body
 
-    if (!name || !email) {
-      return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
+    if (!name || !channels || !budget || !startDate || !endDate) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const contact = await prisma.contact.create({
+    const campaign = await prisma.campaign.create({
       data: {
         name,
-        email,
-        phone,
-        company,
-        position,
-        tags: tags || [],
-        notes,
+        channels,
+        budget: parseFloat(budget),
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        status: 'active',
         userId: user.id
       }
     })
 
-    return NextResponse.json(contact, { status: 201 })
+    return NextResponse.json(campaign, { status: 201 })
   } catch (error) {
-    console.error('Error creating contact:', error)
-    return NextResponse.json({ error: 'Failed to create contact' }, { status: 500 })
+    console.error('Error creating campaign:', error)
+    return NextResponse.json({ error: 'Failed to create campaign' }, { status: 500 })
   }
 }
