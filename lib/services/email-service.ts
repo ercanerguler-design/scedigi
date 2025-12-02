@@ -1,29 +1,27 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
 export class EmailService {
-  private transporter: nodemailer.Transporter
+  private resend: Resend
 
   constructor() {
-    this.transporter = nodemailer.createTransporter({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD
-      }
-    })
+    this.resend = new Resend(process.env.RESEND_API_KEY)
   }
 
   async sendEmail(to: string, subject: string, html: string) {
     try {
-      const info = await this.transporter.sendMail({
-        from: process.env.SMTP_USER,
-        to,
+      const { data, error } = await this.resend.emails.send({
+        from: 'SCE Digital <noreply@scedigital.com>',
+        to: [to],
         subject,
         html
       })
-      return { success: true, messageId: info.messageId }
+      
+      if (error) {
+        console.error('Email send error:', error)
+        throw error
+      }
+      
+      return { success: true, messageId: data?.id }
     } catch (error) {
       console.error('Email send error:', error)
       throw error
