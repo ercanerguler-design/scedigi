@@ -33,19 +33,23 @@ export async function POST(request: Request) {
       )
     }
 
-    // Lead olarak da kaydet
-    await fetch('http://localhost:3001/api/leads/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        email,
-        company,
-        source: 'Website Contact Form',
-        message,
-        score: 60
+    // Lead olarak da kaydet (production'da prisma kullan)
+    try {
+      const { prisma } = await import('@/lib/prisma')
+      await prisma.lead.create({
+        data: {
+          name,
+          email,
+          company: company || '',
+          source: 'Website Contact Form',
+          message: message || '',
+          score: 60
+        }
       })
-    })
+    } catch (leadError) {
+      console.error('Lead creation error:', leadError)
+      // Email gönderildi, lead kaydedilemese de devam et
+    }
 
     return NextResponse.json({
       success: true,
