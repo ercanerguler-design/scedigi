@@ -10,7 +10,10 @@ import {
   Users, 
   Settings,
   Menu,
-  X
+  X,
+  FileText,
+  Building2,
+  UserCircle2
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -20,10 +23,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Leads', href: '/dashboard/leads', icon: Users },
+    { name: 'CRM', href: '/dashboard/crm', icon: UserCircle2 },
+    { name: 'Teklifler', href: '/dashboard/proposals', icon: FileText },
     { name: 'Kampanyalar', href: '/dashboard/campaigns', icon: Target },
-    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
     { name: 'Sosyal Medya', href: '/dashboard/social-media', icon: Share2 },
-    { name: 'Leads/CRM', href: '/dashboard/leads', icon: Users },
+    { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+    { name: 'Servis Ağı', href: '/service-network', icon: Building2 },
     { name: 'Ayarlar', href: '/dashboard/settings', icon: Settings },
   ]
 
@@ -45,8 +51,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         lg:translate-x-0
       `}>
         <div className="p-6 border-b">
-          <Link href="/" className="text-2xl font-bold text-primary-600">
-            SCE Digital
+          <Link href="/" className="flex items-center gap-3 group">
+            <img src="/logo.svg" alt="SCE Digital CRM" className="h-12 w-12 transition-transform group-hover:scale-110" />
+            <div>
+              <div className="text-2xl font-bold text-primary-600 leading-none">SCE Digital</div>
+              <div className="text-xs font-semibold text-slate-600 uppercase tracking-wider mt-1">CRM Platform</div>
+            </div>
           </Link>
         </div>
 

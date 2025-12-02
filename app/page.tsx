@@ -9,8 +9,12 @@ export default function LandingPage() {
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-primary-600">
-            SCE Digital
+          <Link href="/" className="flex items-center gap-3 group">
+            <img src="/logo.svg" alt="SCE Digital CRM Logo" className="h-12 w-12 transition-transform group-hover:scale-110" />
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold text-primary-600 leading-none">SCE Digital</span>
+              <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">CRM</span>
+            </div>
           </Link>
           <div className="flex gap-6 items-center">
             <Link href="/service-network" className="text-slate-600 hover:text-primary-600">
@@ -35,7 +39,13 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">SCE Digital</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <img src="/logo.svg" alt="SCE Digital CRM" className="h-10 w-10" />
+                <div>
+                  <h3 className="text-xl font-bold leading-none">SCE Digital</h3>
+                  <p className="text-sm text-slate-400 uppercase tracking-wide">CRM Platform</p>
+                </div>
+              </div>
               <p className="text-slate-400">Dijital pazarlamada yeni nesil çözümler</p>
             </div>
             <div>
