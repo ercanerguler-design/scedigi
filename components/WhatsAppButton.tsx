@@ -5,10 +5,10 @@ import { useState } from 'react'
 
 export default function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false)
-  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '905123456789'
+  const phoneNumber = '905433929230' // SCE INNOVATION WhatsApp
   
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent('Merhaba, web sitenizden ulaşıyorum.')
+    const message = encodeURIComponent('Merhaba, SCE Digital CRM web sitenizden ulaşıyorum.')
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
   }
 
