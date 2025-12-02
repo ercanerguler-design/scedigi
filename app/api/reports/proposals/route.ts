@@ -45,11 +45,11 @@ export async function GET(request: Request) {
       }),
       prisma.proposal.aggregate({
         where: whereClause,
-        _sum: { totalAmount: true }
+        _sum: { total: true }
       }),
       prisma.proposal.aggregate({
         where: whereClause,
-        _avg: { totalAmount: true }
+        _avg: { total: true }
       })
     ])
 
@@ -58,12 +58,12 @@ export async function GET(request: Request) {
       const existing = acc.find(item => item.status === proposal.status)
       if (existing) {
         existing.count++
-        existing.value += proposal.totalAmount
+        existing.value += proposal.total
       } else {
         acc.push({ 
           status: proposal.status, 
           count: 1,
-          value: proposal.totalAmount
+          value: proposal.total
         })
       }
       return acc
@@ -72,8 +72,8 @@ export async function GET(request: Request) {
     return NextResponse.json({
       totalProposals: proposals.length,
       byStatus,
-      totalValue: totalValue._sum.totalAmount || 0,
-      avgValue: avgValue._avg.totalAmount || 0,
+      totalValue: totalValue._sum.total || 0,
+      avgValue: avgValue._avg.total || 0,
       recentProposals: proposals.slice(0, 10)
     })
   } catch (error) {

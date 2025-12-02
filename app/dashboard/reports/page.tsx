@@ -340,7 +340,7 @@ export default function ReportsPage() {
                               <p className="text-sm text-slate-600">{proposal.clientEmail}</p>
                             </div>
                             <div className="text-right">
-                              <p className="text-xl font-bold text-slate-900">₺{proposal.totalAmount.toLocaleString('tr-TR')}</p>
+                              <p className="text-xl font-bold text-slate-900">₺{proposal.total.toLocaleString('tr-TR')}</p>
                               <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium ${
                                 proposal.status === 'accepted' ? 'bg-green-100 text-green-700' :
                                 proposal.status === 'sent' ? 'bg-blue-100 text-blue-700' :

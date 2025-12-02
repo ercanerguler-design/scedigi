@@ -60,7 +60,7 @@ export async function GET() {
       // Proposal value sum
       prisma.proposal.aggregate({
         where: { userId: user.id },
-        _sum: { totalAmount: true }
+        _sum: { total: true }
       }),
       // Completed tasks
       prisma.task.count({
@@ -84,7 +84,7 @@ export async function GET() {
       avgLeadScore: avgLeadScore._avg.score || 0,
       activeCampaigns,
       totalProposals,
-      proposalValue: proposalValue._sum.totalAmount || 0,
+      proposalValue: proposalValue._sum.total || 0,
       completedTasks,
       totalTasks,
       conversionRate
