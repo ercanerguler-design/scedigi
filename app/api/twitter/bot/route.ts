@@ -1,29 +1,53 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { TwitterAPI } from '@/lib/services/twitter-api'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions)
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Oturum bulunamadı. Lütfen giriş yapın.' },
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const { action, content, schedule } = body
 
-    // Twitter API anahtarlarını kontrol et
-    const apiKey = process.env.TWITTER_API_KEY
-    const apiSecret = process.env.TWITTER_API_SECRET
-    const accessToken = process.env.TWITTER_ACCESS_TOKEN
-    const accessSecret = process.env.TWITTER_ACCESS_SECRET
+    // Kullanıcının Integration bilgilerini al
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      include: { integration: true }
+    })
 
-    if (!apiKey || !apiSecret || !accessToken || !accessSecret) {
+    if (!user || !user.integration) {
       return NextResponse.json(
-        { success: false, error: 'Twitter API anahtarları yapılandırılmamış. .env.local dosyasını kontrol edin.' },
+        { success: false, error: 'Twitter entegrasyonu yapılmamış. Lütfen Entegrasyonlar sayfasından Twitter API bilgilerinizi ekleyin.' },
+        { status: 400 }
+      )
+    }
+
+    const { twitterApiKey, twitterApiSecret, twitterAccessToken, twitterAccessSecret, twitterBearerToken } = user.integration
+
+    if (!twitterApiKey || !twitterApiSecret || !twitterAccessToken || !twitterAccessSecret) {
+      return NextResponse.json(
+        { success: false, error: 'Twitter API bilgileri eksik. Lütfen Entegrasyonlar sayfasından tamamlayın.' },
         { status: 400 }
       )
     }
 
     const twitterAPI = new TwitterAPI({
-      apiKey,
-      apiSecret,
-      accessToken,
-      accessSecret
+      apiKey: twitterApiKey,
+      apiSecret: twitterApiSecret,
+      accessToken: twitterAccessToken,
+      accessSecret: twitterAccessSecret,
+      bearerToken: twitterBearerToken || undefined
     })
 
     if (action === 'tweet') {
